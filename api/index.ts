@@ -8,9 +8,6 @@ import bcd, {
   SupportStatement,
   VersionValue,
 } from "@mdn/browser-compat-data";
-import { mkdir, writeFile } from "node:fs/promises";
-import { major } from "semver";
-import { version } from "./package.json";
 
 interface Data {
   data: IdentifierExtended;
@@ -30,13 +27,13 @@ interface IdentifierExtended {
   [key: string]: IdentifierExtended | CompatStatementExtended;
 }
 
-const BUILD_PATH = `build/v${major(version)}`;
-
 const {
   __meta: { version: bcdVersion },
   browsers,
-  ...apis
+  ...bcdAPIs
 } = bcd;
+
+export { bcdVersion, bcdAPIs };
 
 const filteredBrowsers = Object.fromEntries(
   Object.entries(browsers).map(([name, statement]) => [
@@ -52,21 +49,29 @@ const filteredBrowsers = Object.fromEntries(
   ])
 ) as Browsers;
 
-main();
-
-async function main() {
-  await mkdir(`${BUILD_PATH}/current`, { recursive: true });
-  await mkdir(`${BUILD_PATH}/${bcdVersion}`, { recursive: true });
-  walk(apis, "");
+export default function getDataForPath(path: string): Data | void {
+  const subtree = path
+    .split(".")
+    .reduce<Identifier | undefined>((prev, curr) => prev?.[curr], bcdAPIs);
+  if (subtree) {
+    return {
+      data: walk(subtree, path),
+      browsers: filteredBrowsers,
+    };
+  }
 }
 
-function walk(tree: Identifier, path: string): IdentifierExtended {
+export function walk(
+  tree: Identifier,
+  path: string,
+  callback?: (data: Data, path: string) => void
+): IdentifierExtended {
   const extendedTree: IdentifierExtended = Object.fromEntries(
     Object.entries(tree).map(([key, subtree]) => [
       key,
       key === "__compat"
         ? extendCompatStatement(subtree as CompatStatement)
-        : walk(subtree as Identifier, `${path}.${key}`),
+        : walk(subtree as Identifier, `${path}.${key}`, callback),
     ])
   );
 
@@ -74,10 +79,7 @@ function walk(tree: Identifier, path: string): IdentifierExtended {
     data: extendedTree,
     browsers: filteredBrowsers,
   };
-  const json = JSON.stringify(data);
-  const filename = `${path.slice(1)}.json`;
-  writeFile(`${BUILD_PATH}/current/${filename}`, json);
-  writeFile(`${BUILD_PATH}/${bcdVersion}/${filename}`, json);
+  callback?.(data, path);
   return extendedTree;
 }
 

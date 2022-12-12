@@ -1,14 +1,28 @@
 {
-  "name": "bcd-utils-api",
+  "name": "@mdn/bcd-utils-api",
   "version": "0.0.1",
   "description": "Converts bcd data into json files usable by yari's bcd table",
+  "homepage": "https://github.com/mdn/bcd-utils#readme",
+  "bugs": {
+    "url": "https://github.com/mdn/bcd-utils/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdn/bcd-utils.git"
+  },
   "license": "MPL-2.0",
   "author": "MDN Web Docs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "start": "ts-node index.ts"
+    "build": "tsc",
+    "generate": "ts-node cli.ts",
+    "test": "npm run generate && rm -r out"
   },
   "dependencies": {
-    "@mdn/browser-compat-data": "*",
+    "@mdn/browser-compat-data": "latest"
+  },
+  "devDependencies": {
     "@types/node": "^16.18.0",
     "@types/semver": "^7.3.13",
     "semver": "^7.3.8",
