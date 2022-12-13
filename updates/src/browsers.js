@@ -1,5 +1,32 @@
+const SUPPORTED_BROWSERS = new Set([
+  "chrome",
+  "chrome_android",
+  "deno",
+  "edge",
+  "firefox",
+  "firefox_android",
+  "ie",
+  "nodejs",
+//  "oculus",
+  "opera",
+  "opera_android",
+  "safari",
+  "safari_ios",
+  "samsunginternet_android",
+  "webview_android",
+]);
+
+export function browsers(data) {
+  for (const browser in data.browsers) {
+    if (!SUPPORTED_BROWSERS.has(browser)) {
+      delete data.browsers[browser];
+    }
+  }
+  return data.browsers;
+}
+
 export function browsersForStatus(data, { status = "current" } = {}) {
-  return Object.entries(data.browsers)
+  return Object.entries(browsers(data))
     .map(([browser, data]) => {
       const version = Object.entries(data.releases).find(([, r]) => r.status == status);
       if (version) {
@@ -13,7 +40,7 @@ export function browsersForStatus(data, { status = "current" } = {}) {
 export function currentBrowsersAndEngine(data) {
   const engines = ["Blink", "Gecko", "WebKit"];
   return Object.fromEntries(
-    Object.entries(data.browsers || {})
+    Object.entries(browsers(data) || {})
       .map(([browser, { releases }]) => {
         const [version, { engine } = {}] =
           Object.entries(releases || {}).find(([, release]) => release.status === "current") || [];
@@ -25,7 +52,7 @@ export function currentBrowsersAndEngine(data) {
 
 export function browserHistory(data) {
   const byDate = [];
-  for (const [browser, { name, releases }] of Object.entries(data.browsers || {})) {
+  for (const [browser, { name, releases }] of Object.entries(browsers(data) || {})) {
     for (const [version, release] of Object.entries(releases || {})) {
       byDate.push({ ...release, browser, version, name });
     }

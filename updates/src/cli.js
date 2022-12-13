@@ -1,5 +1,6 @@
 import { program } from "commander";
-import { addedByRelease, addedByReleaseStandalone, browsers, features } from "./process.js";
+import { browsers } from "./browsers.js";
+import { addedByRelease, addedByReleaseStandalone, features } from "./process.js";
 import semver from "semver";
 import packageJson from "package-json";
 
@@ -30,17 +31,17 @@ program
   .action((since) => {
     fs.mkdirSync(options.outPath, { recursive: true });
     const standaloneData = addedByReleaseStandalone({ data, since });
-    console.log("writing files...")
+    console.log("writing files...");
+    const last = Math.floor(standaloneData.length / 10);
     for (let i = 0; i < standaloneData.length / 10; i++) {
-      const next = i + 1 < standaloneData.length / 10 ? `bcd-updates-${i + 1}.json` : null;
       fs.writeFileSync(
         path.join(options.outPath, `bcd-updates-${i}.json`),
-        JSON.stringify({ data: standaloneData.slice(i * 10, (i + 1) * 10, null, 2), next })
+        JSON.stringify({ data: standaloneData.slice(i * 10, (i + 1) * 10, null, 2), last })
       );
     }
   });
 program.command("browsers").action(() => {
-  console.log(JSON.stringify(browsers({ data }), null, 2));
+  console.log(JSON.stringify(browsers(data), null, 2));
 });
 program.command("added").action(() => {
   console.log(JSON.stringify(addedByRelease({ data }), null, 2));

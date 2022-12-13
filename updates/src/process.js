@@ -1,4 +1,4 @@
-import { browserHistory, currentBrowsersAndEngine } from "./browsers.js";
+import { browserHistory, currentBrowsersAndEngine, filterBrowserByStatus } from "./browsers.js";
 import { walk } from "./walk.js";
 import { cleanCompat, stripSupport } from "./clean.js";
 import { simpleDate } from "./utils.js";
@@ -38,7 +38,7 @@ export function addedByReleaseStandalone({ data, since = simpleDate(new Date(0))
   const simpleSince = since instanceof Date ? simpleDate(since) : since;
   const simpleNow = simpleDate(new Date());
   const engines = currentBrowsersAndEngine(data);
-  const history = browserHistory(data).filter(
+  const history = filterBrowserByStatus(browserHistory(data)).filter(
     ({ release_date }) => release_date > simpleSince && release_date <= simpleNow
   );
   const compat = [...walk({ data })].map(cleanCompat);
@@ -90,8 +90,4 @@ export function addedByRelease({ data, since = new Date(0) }) {
 
 export function features({ data }) {
   return [...walk({ data })].map(stripSupport);
-}
-
-export function browsers({ data }) {
-  return data.browsers;
 }
