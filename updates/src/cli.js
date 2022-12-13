@@ -4,10 +4,11 @@ import semver from "semver";
 import packageJson from "package-json";
 
 import fs from "node:fs";
+import path from "node:path";
 
 program.version("0.0.1");
 program.option("-c, --current <version>", "current bcd version");
-program.option("-o, --out-prefix <outPrefix>", "output file prefix", "output");
+program.option("-o, --out-path <outPath>", "out path", "v0");
 
 const options = program.opts();
 
@@ -27,11 +28,13 @@ program
   .command("standalone")
   .argument("[since]")
   .action((since) => {
+    fs.mkdirSync(options.outPath, { recursive: true });
     const standaloneData = addedByReleaseStandalone({ data, since });
+    console.log("writing files...")
     for (let i = 0; i < standaloneData.length / 10; i++) {
-      const next = i + 1 < standaloneData.length / 10 ? `${options.outPrefix}-${i + 1}.json` : null;
+      const next = i + 1 < standaloneData.length / 10 ? `bcd-updates-${i + 1}.json` : null;
       fs.writeFileSync(
-        `${options.outPrefix}-${i}.json`,
+        path.join(options.outPath, `bcd-updates-${i}.json`),
         JSON.stringify({ data: standaloneData.slice(i * 10, (i + 1) * 10, null, 2), next })
       );
     }

@@ -6,6 +6,9 @@
   "type": "module",
   "author": "Florian Dieminger <me@fiji-flo.de>",
   "license": "MPL-2.0",
+  "scripts": {
+    "updates": "node src/cli.js"
+  },
   "dependencies": {
     "commander": "^9.4.1",
     "package-json": "^8.1.0",
