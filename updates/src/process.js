@@ -67,11 +67,19 @@ export function addedByRelease({ data, since = new Date(0) }) {
     { browser, version, release_date },
     [...walk({ data })].map(cleanCompat).reduce(
       (acc, { path, compat }) => {
-        if ((compat?.support[browser] || []).some(({ version_added, flags }) => version === version_added && !flags)) {
+        if (
+          (compat?.support[browser] || []).some(
+            ({ version_added, flags, prefix, partial_implementation }) =>
+              version === version_added && !flags && !prefix && !partial_implementation
+          )
+        ) {
           acc.added.push(path);
         }
         if (
-          (compat?.support[browser] || []).some(({ version_removed, flags }) => version === version_removed && !flags)
+          (compat?.support[browser] || []).some(
+            ({ version_removed, flags, prefix, partial_implementation }) =>
+              version === version_removed && !flags && !prefix && !partial_implementation
+          )
         ) {
           acc.removed.push(path);
         }
