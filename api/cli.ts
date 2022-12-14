@@ -10,9 +10,9 @@ main();
 async function main() {
   await mkdir(`${BUILD_PATH}/current`, { recursive: true });
   await mkdir(`${BUILD_PATH}/${bcdVersion}`, { recursive: true });
-  walk(bcdAPIs, "", (data, path) => {
+  walk(bcdAPIs, "", (data) => {
     const json = JSON.stringify(data);
-    const filename = `${path.slice(1)}.json`;
+    const filename = `${data.query}.json`;
     writeFile(`${BUILD_PATH}/current/${filename}`, json);
     writeFile(`${BUILD_PATH}/${bcdVersion}/${filename}`, json);
   });

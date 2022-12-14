@@ -11,6 +11,7 @@ import bcd, {
 
 interface Data {
   data: IdentifierExtended;
+  query: string;
   browsers: Browsers;
 }
 
@@ -56,6 +57,7 @@ export default function getDataForPath(path: string): Data | void {
   if (subtree) {
     return {
       data: walk(subtree, path),
+      query: path.slice(1),
       browsers: filteredBrowsers,
     };
   }
@@ -64,7 +66,7 @@ export default function getDataForPath(path: string): Data | void {
 export function walk(
   tree: Identifier,
   path: string,
-  callback?: (data: Data, path: string) => void
+  callback?: (data: Data) => void
 ): IdentifierExtended {
   const extendedTree: IdentifierExtended = Object.fromEntries(
     Object.entries(tree).map(([key, subtree]) => [
@@ -77,9 +79,10 @@ export function walk(
 
   const data: Data = {
     data: extendedTree,
+    query: path.slice(1),
     browsers: filteredBrowsers,
   };
-  callback?.(data, path);
+  callback?.(data);
   return extendedTree;
 }
 
