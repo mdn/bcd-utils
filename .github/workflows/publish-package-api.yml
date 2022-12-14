@@ -1,9 +1,12 @@
 name: Publish bcd-utils-api package to npm
 
 on:
-  release:
-    types:
-      - published
+  workflow_dispatch:
+    inputs:
+      notes:
+        description: "Notes"
+        required: false
+        default: ""
 
 jobs:
   publish-package-api:

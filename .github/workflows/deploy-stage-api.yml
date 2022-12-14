@@ -1,5 +1,13 @@
 name: Deploy bcd-utils-api data to s3
 
+on:
+  workflow_dispatch:
+    inputs:
+      notes:
+        description: "Notes"
+        required: false
+        default: ""
+
 jobs:
   deploy-stage-api:
     name: Deploy to stage
