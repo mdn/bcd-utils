@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "commander": "^9.4.1",
-    "package-json": "^8.1.0",
-    "semver": "^7.3.8"
+    "compare-versions": "^5.0.3",
+    "package-json": "^8.1.0"
   },
   "devDependencies": {
     "eslint": "^8.29.0"

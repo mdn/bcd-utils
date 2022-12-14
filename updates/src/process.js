@@ -1,7 +1,11 @@
-import { browserHistory, currentBrowsersAndEngine, filterBrowserByStatus } from "./browsers.js";
+import {
+  browserHistory,
+  currentBrowsersAndEngine,
+  filterBrowserByStatus,
+} from "./browsers.js";
 import { walk } from "./walk.js";
 import { cleanCompat, stripSupport } from "./clean.js";
-import { simpleDate } from "./utils.js";
+import { simpleDate, gt, gte } from "./utils.js";
 
 function addedForVersion(version) {
   return ({ version_added, flags, prefix, partial_implementation }) =>
@@ -21,9 +25,15 @@ function mapStandaloneCompat(engines, { support, ...compat }) {
         Object.entries(support || {})
           .map(([browser, s]) => {
             const { version, engine } = engines[browser] || {};
-            const removed = s.find(({ version_removed }) => Boolean(version_removed));
+            const removed = s.find(({ version_removed }) =>
+              Boolean(version_removed)
+            );
             const added = s.find(({ version_added }) => Boolean(version_added));
-            if (added && version >= added.version_added && (!removed || version > removed.version_removed)) {
+            if (
+              added &&
+              gte(version, added.version_added) &&
+              (!removed || gt(version, removed.version_removed))
+            ) {
               return engine;
             }
             return null;
@@ -34,12 +44,16 @@ function mapStandaloneCompat(engines, { support, ...compat }) {
   };
 }
 
-export function addedByReleaseStandalone({ data, since = simpleDate(new Date(0)) }) {
+export function addedByReleaseStandalone({
+  data,
+  since = simpleDate(new Date(0)),
+}) {
   const simpleSince = since instanceof Date ? simpleDate(since) : since;
   const simpleNow = simpleDate(new Date());
   const engines = currentBrowsersAndEngine(data);
   const history = filterBrowserByStatus(browserHistory(data)).filter(
-    ({ release_date }) => release_date > simpleSince && release_date <= simpleNow
+    ({ release_date }) =>
+      release_date > simpleSince && release_date <= simpleNow
   );
   const compat = [...walk({ data })].map(cleanCompat);
   return history.map(({ browser, version, release_date, ...rest }) => {
@@ -51,10 +65,18 @@ export function addedByReleaseStandalone({ data, since = simpleDate(new Date(0))
       events: compat.reduce(
         (acc, { path, compat }) => {
           if ((compat?.support[browser] || []).some(addedForVersion(version))) {
-            acc.added.push({ path, compat: mapStandaloneCompat(engines, compat) });
+            acc.added.push({
+              path,
+              compat: mapStandaloneCompat(engines, compat),
+            });
           }
-          if ((compat?.support[browser] || []).some(removedForVersion(version))) {
-            acc.removed.push({ path, compat: mapStandaloneCompat(engines, compat) });
+          if (
+            (compat?.support[browser] || []).some(removedForVersion(version))
+          ) {
+            acc.removed.push({
+              path,
+              compat: mapStandaloneCompat(engines, compat),
+            });
           }
           return acc;
         },
@@ -68,7 +90,8 @@ export function addedByRelease({ data, since = new Date(0) }) {
   const simpleSince = simpleDate(since);
   const simpleNow = simpleDate(new Date());
   const history = browserHistory(data).filter(
-    ({ release_date }) => release_date > simpleSince && release_date <= simpleNow
+    ({ release_date }) =>
+      release_date > simpleSince && release_date <= simpleNow
   );
   const compat = [...walk({ data })].map(cleanCompat);
   return history.map(({ browser, version, release_date }) => [
