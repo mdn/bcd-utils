@@ -5,7 +5,7 @@ import {
 } from "./browsers.js";
 import { walk } from "./walk.js";
 import { cleanCompat, stripSupport } from "./clean.js";
-import { simpleDate, gt, gte } from "./utils.js";
+import { simpleDate, gte } from "./utils.js";
 
 function addedForVersion(version) {
   return ({ version_added, flags, prefix, partial_implementation }) =>
@@ -32,7 +32,7 @@ function mapStandaloneCompat(engines, { support, ...compat }) {
             if (
               added &&
               gte(version, added.version_added) &&
-              (!removed || gt(version, removed.version_removed))
+              !(removed && gte(version, removed.version_removed))
             ) {
               return engine;
             }
