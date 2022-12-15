@@ -9,7 +9,7 @@ on:
         default: ""
 
 jobs:
-  deploy-stage-api:
+  deploy-stage-updates:
     name: Deploy to stage
     runs-on: ubuntu-latest
     defaults:
