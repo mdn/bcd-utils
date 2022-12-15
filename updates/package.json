@@ -1,0 +1,20 @@
+{
+  "name": "bcd-updates",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "author": "Florian Dieminger <me@fiji-flo.de>",
+  "license": "MPL-2.0",
+  "scripts": {
+    "updates": "node src/cli.js"
+  },
+  "dependencies": {
+    "commander": "^9.4.1",
+    "compare-versions": "^5.0.3",
+    "package-json": "^8.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.29.0"
+  }
+}
