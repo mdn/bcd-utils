@@ -1,4 +1,4 @@
-name: Deploy bcd updates data to s3
+name: Prod Build - Updates
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Deploy bcd-utils-api data to s3
+name: Prod Build - API
 
 on:
   workflow_dispatch:
