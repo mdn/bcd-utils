@@ -1,0 +1,34 @@
+name: Deploy bcd updates data to s3
+
+on:
+  workflow_dispatch:
+    inputs:
+      notes:
+        description: "Notes"
+        required: false
+        default: ""
+
+jobs:
+  deploy-prod-updates:
+    name: Deploy to prod
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: updates
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 19
+          registry-url: "https://registry.npmjs.org/"
+          cache: npm
+      - run: npm ci
+      - run: npm run updates standalone
+      - name: Configure AWS credentials for prod
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_AWS_ACCESS_KEY_SECRET }}
+          aws-region: us-west-2
+      - run: aws s3 sync --acl public-read --delete v0/ s3://mdn-content-prod/main/bcd/updates/v0
