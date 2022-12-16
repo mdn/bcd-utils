@@ -24,7 +24,7 @@ jobs:
           registry-url: "https://registry.npmjs.org/"
           cache: npm
       - run: npm ci
-      - run: npm run update standalone
+      - run: npm run updates standalone
       - name: Configure AWS credentials for stage
         uses: aws-actions/configure-aws-credentials@v1
         with:
