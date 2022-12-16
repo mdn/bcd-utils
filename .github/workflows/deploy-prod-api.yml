@@ -9,8 +9,8 @@ on:
         default: ""
 
 jobs:
-  deploy-stage-api:
-    name: Deploy to stage
+  deploy-prod-api:
+    name: Deploy to prod
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -26,11 +26,11 @@ jobs:
       - run: npm ci
       - run: npm update @mdn/browser-compat-data
       - run: npm run generate
-      - name: Configure AWS credentials for stage
+      - name: Configure AWS credentials for prod
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.STAGE_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.STAGE_AWS_ACCESS_KEY_SECRET }}
+          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_AWS_ACCESS_KEY_SECRET }}
           aws-region: us-west-2
-      - run: aws s3 sync --acl public-read out/ s3://mdn-content-stage/main/bcd/api/
-      - run: aws s3 sync --acl public-read --delete out/v0/current s3://mdn-content-stage/main/bcd/api/v0/current
+      - run: aws s3 sync --acl public-read out/ s3://mdn-content-prod/main/bcd/api/
+      - run: aws s3 sync --acl public-read --delete out/v0/current s3://mdn-content-prod/main/bcd/api/v0/current

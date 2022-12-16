@@ -1,4 +1,4 @@
-name: Stage Build - Updates
+name: Prod Build - Updates
 
 on:
   workflow_dispatch:
@@ -9,8 +9,8 @@ on:
         default: ""
 
 jobs:
-  deploy-stage-updates:
-    name: Deploy to stage
+  deploy-prod-updates:
+    name: Deploy to prod
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -25,10 +25,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run updates standalone
-      - name: Configure AWS credentials for stage
+      - name: Configure AWS credentials for prod
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.STAGE_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.STAGE_AWS_ACCESS_KEY_SECRET }}
+          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PROD_AWS_ACCESS_KEY_SECRET }}
           aws-region: us-west-2
-      - run: aws s3 sync --acl public-read --delete v0/ s3://mdn-content-stage/main/bcd/updates/v0
+      - run: aws s3 sync --acl public-read --delete v0/ s3://mdn-content-prod/main/bcd/updates/v0
