@@ -1,4 +1,4 @@
-name: Prod Build - API
+name: Stage Build - API
 
 on:
   workflow_dispatch:
