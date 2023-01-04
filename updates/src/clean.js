@@ -8,7 +8,7 @@ export function cleanCompat(c) {
 }
 
 export function stripSupport(c) {
-  const { compat: { support: _, ...compat } = {}, data: __, ...rest} = c;
+  const { compat: { support: _, ...compat } = {}, data: __, ...rest } = c;
   return { ...compat, ...rest };
 }
 

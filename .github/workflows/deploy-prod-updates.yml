@@ -24,11 +24,11 @@ jobs:
           registry-url: "https://registry.npmjs.org/"
           cache: npm
       - run: npm ci
-      - run: npm run updates standalone
+      - run: npm run updates rumba
       - name: Configure AWS credentials for prod
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_AWS_ACCESS_KEY_SECRET }}
+          aws-access-key-id: ${{ secrets.UPDATES_PROD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.UPDATES_PROD_AWS_ACCESS_KEY_SECRET }}
           aws-region: us-west-2
-      - run: aws s3 sync --acl public-read --delete v0/ s3://mdn-content-prod/main/bcd/updates/v0
+      - run: aws s3 sync --acl public-read rumba-updates/ s3://updates-prod-developer-mozilla-e2b95ed55d379b1a/rumba-bcd-updates/

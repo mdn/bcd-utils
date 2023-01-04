@@ -86,7 +86,7 @@ export function addedByReleaseStandalone({
   });
 }
 
-export function addedByRelease({ data, since = new Date(0) }) {
+export function addedByRelease(data, since = new Date(0)) {
   const simpleSince = simpleDate(since);
   const simpleNow = simpleDate(new Date());
   const history = browserHistory(data).filter(
@@ -111,6 +111,6 @@ export function addedByRelease({ data, since = new Date(0) }) {
   ]);
 }
 
-export function features({ data }) {
+export function features(data) {
   return [...walk({ data })].map(stripSupport);
 }
