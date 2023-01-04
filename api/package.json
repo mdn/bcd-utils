@@ -1,6 +1,6 @@
 {
   "name": "@mdn/bcd-utils-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Converts bcd data into json files usable by yari's bcd table",
   "homepage": "https://github.com/mdn/bcd-utils#readme",
   "bugs": {
