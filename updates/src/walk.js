@@ -1,23 +1,23 @@
 export function joinPath() {
-  return Array.from(arguments).filter(Boolean).join('.');
+  return Array.from(arguments).filter(Boolean).join(".");
 }
 
 export function isFeature(obj) {
-  return '__compat' in obj;
+  return "__compat" in obj;
 }
 
 export function isBrowser(obj) {
-  return 'name' in obj && 'releases' in obj;
+  return "name" in obj && "releases" in obj;
 }
 
 export function descendantKeys(data) {
-  if (typeof data !== 'object') {
+  if (typeof data !== "object") {
     // Return if the data isn't an object
     return [];
   }
 
   if (isFeature(data)) {
-    return Object.keys(data).filter((key) => !key.startsWith('__'));
+    return Object.keys(data).filter((key) => !key.startsWith("__"));
   }
 
   if (isBrowser(data)) {
@@ -25,11 +25,11 @@ export function descendantKeys(data) {
     return [];
   }
 
-  return Object.keys(data).filter((key) => key !== '__meta');
+  return Object.keys(data).filter((key) => key !== "__meta");
 }
 
 export function lowLevelWalk(data, path, depth = Infinity) {
-  const flat = []
+  const flat = [];
   if (path !== undefined) {
     const next = {
       path,
