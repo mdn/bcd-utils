@@ -50,7 +50,7 @@ const filteredBrowsers = Object.fromEntries(
   ])
 ) as Browsers;
 
-export default function getDataForPath(path: string): Data | void {
+export function getBCDDataForPath(path: string): Data | void {
   const subtree = path
     .split(".")
     .reduce<Identifier | undefined>((prev, curr) => prev?.[curr], bcdAPIs);
