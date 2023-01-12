@@ -111,6 +111,6 @@ export function addedByRelease(data, since = new Date(0)) {
   ]);
 }
 
-export function features(data) {
+export function features({ browsers, ...data }) {
   return [...walk({ data })].map(stripSupport);
 }
