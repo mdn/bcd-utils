@@ -7,6 +7,8 @@ on:
         description: "Notes"
         required: false
         default: ""
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   deploy-prod-updates:
