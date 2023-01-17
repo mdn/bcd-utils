@@ -36,3 +36,8 @@ jobs:
           aws-region: us-west-2
       - run: aws s3 sync --acl public-read out/ s3://mdn-content-prod/main/bcd/api/
       - run: aws s3 sync --acl public-read --delete out/v0/current s3://mdn-content-prod/main/bcd/api/v0/current
+      - name: Invalidate CDN
+        env:
+          DISTRIBUTION: E2ZY2DGUN70EMI
+          PATHS: /bcd/api/*
+        run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION" --paths "$PATHS"
