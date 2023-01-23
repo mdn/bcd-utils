@@ -1,5 +1,6 @@
 import {
   browserHistory,
+  browsers,
   currentBrowsersAndEngine,
   filterBrowserByStatus,
 } from "./browsers.js";
@@ -20,28 +21,93 @@ function removedForVersion(version) {
 function mapStandaloneCompat(engines, { support, ...compat }) {
   return {
     ...compat,
-    engines: [
-      ...new Set(
-        Object.entries(support || {})
-          .map(([browser, s]) => {
-            const { version, engine } = engines[browser] || {};
-            const removed = s.find(({ version_removed }) =>
-              Boolean(version_removed)
-            );
-            const added = s.find(({ version_added }) => Boolean(version_added));
-            if (
-              added &&
-              gte(version, added.version_added) &&
-              !(removed && gte(version, removed.version_removed))
-            ) {
-              return engine;
-            }
-            return null;
-          })
-          .filter(Boolean)
-      ),
-    ],
+    engines: mapEngines(engines, { support }),
   };
+}
+
+function buildStableVersionAndEngineByDate(browsers) {
+  const lookup = new Map();
+  for (const [browser, { releases }] of Object.entries(browsers)) {
+    const all = Object.entries(releases)
+      .map(([version, release]) => {
+        return { version, ...release };
+      })
+      .filter(({ release_date }) => Boolean(release_date));
+    all.sort(({ release_date: a }, { release_date: b }) => {
+      if (a < b) return -1;
+      if (b < a) return 1;
+      return 0;
+    });
+    lookup.set(browser, all);
+  }
+  return lookup;
+}
+
+let STABLE_VERSION_AND_ENGINE_BY_DATE;
+
+function stableVersionAndEngineByDate(browser, release_date) {
+  const all = STABLE_VERSION_AND_ENGINE_BY_DATE.get(browser);
+  if (!all) {
+    return null;
+  }
+  const idx = all.findLastIndex(({ release_date: r }) => r <= release_date);
+  if (idx > -1) {
+    const { version, engine } = all[idx];
+    return { version, engine: engine?.toLowerCase() };
+  }
+  return null;
+}
+
+function engineSupport(release_date, { support }) {
+  return [
+    ...new Set(
+      Object.entries(support || {})
+        .map(([browser, s]) => {
+          let a = stableVersionAndEngineByDate(browser, release_date);
+          if (!a) {
+            return null;
+          }
+          const { version, engine } = a;
+          const removed = s.find(({ version_removed }) =>
+            Boolean(version_removed)
+          );
+          const added = s.find(({ version_added }) => Boolean(version_added));
+          if (
+            added &&
+            gte(version, added.version_added) &&
+            !(removed && gte(version, removed.version_removed))
+          ) {
+            return engine;
+          }
+          return null;
+        })
+        .filter(Boolean)
+    ),
+  ];
+}
+
+function mapEngines(engines, { support }) {
+  return [
+    ...new Set(
+      Object.entries(support || {})
+        .map(([browser, s]) => {
+          const { version, engine } = engines[browser] || {};
+          const removed = s.find(({ version_removed }) =>
+            Boolean(version_removed)
+          );
+          const added = s.find(({ version_added }) => Boolean(version_added));
+          if (
+            added &&
+            gte(version, added.version_added) &&
+            !(removed && gte(version, removed.version_removed))
+          ) {
+            return engine;
+          }
+          return null;
+        })
+        .filter(Boolean)
+    ),
+  ];
 }
 
 export function addedByReleaseStandalone({
@@ -93,16 +159,26 @@ export function addedByRelease(data, since = new Date(0)) {
     ({ release_date }) =>
       release_date > simpleSince && release_date <= simpleNow
   );
+  const b = browsers(data);
+  if (!STABLE_VERSION_AND_ENGINE_BY_DATE) {
+    STABLE_VERSION_AND_ENGINE_BY_DATE = buildStableVersionAndEngineByDate(b);
+  }
   const compat = [...walk({ data })].map(cleanCompat);
   return history.map(({ browser, version, release_date }) => [
     { browser, version, release_date },
     compat.reduce(
       (acc, { path, compat }) => {
         if ((compat?.support[browser] || []).some(addedForVersion(version))) {
-          acc.added.push(path);
+          const engines = engineSupport(release_date, {
+            support: compat?.support || {},
+          });
+          acc.added.push({ path, engines });
         }
         if ((compat?.support[browser] || []).some(removedForVersion(version))) {
-          acc.removed.push(path);
+          const engines = engineSupport(release_date, {
+            support: compat?.support || {},
+          });
+          acc.removed.push({ path, engines });
         }
         return acc;
       },
