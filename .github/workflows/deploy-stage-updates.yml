@@ -34,7 +34,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.UPDATES_STAGE_AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
       - run: aws s3 sync --acl public-read rumba-updates/ s3://updates-stage-developer-allizom-6d533edfe2c2c683/rumba-bcd-updates/
-  trigger-rumba-update-if-new:
+  trigger-stage-rumba-update-if-new:
     name: Trigger rumba updates if new release.
     needs: deploy-stage-updates
     runs-on: ubuntu-latest
