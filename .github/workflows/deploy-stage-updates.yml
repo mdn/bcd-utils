@@ -34,3 +34,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.UPDATES_STAGE_AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
       - run: aws s3 sync --acl public-read rumba-updates/ s3://updates-stage-developer-allizom-6d533edfe2c2c683/rumba-bcd-updates/
+  trigger-rumba-update-if-new:
+    name: Trigger rumba updates if new release.
+    needs: deploy-stage-updates
+    runs-on: ubuntu-latest
+    env:
+      RUMBA_AUTH: ${{ secrets.RUMBA_STAGE_API_KEY }}
+    steps:
+      - run: |
+          most_recent_update=`curl https://updates.developer.allizom.org/rumba-bcd-updates/bcd-updates.json | jq '[.browsers[].releases[] | select(.status == "current")] | max_by(.release_date) | .release_date'`
+          most_recent_api_release=`curl https://developer.allizom.org/api/v2/updates/ | jq '.data[0].release_date'`
+          if [ $(date -d $most_recent_update +%s) -gt $(date -d $most_recent_api_release +%s) ]; 
+          then 
+            echo "$most_recent_update is more recent than $most_recent_api_release";
+            curl -X POST 'https://developer.allizom.org/admin-api/v2/updates/' --header "Authorization: Bearer $RUMBA_AUTH"
+          else
+            echo "$most_recent_update is not more recent than $most_recent_api_release. Finished!";
+          fi
