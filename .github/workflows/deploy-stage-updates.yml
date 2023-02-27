@@ -41,5 +41,17 @@ jobs:
     env:
       RUMBA_AUTH: ${{ secrets.RUMBA_STAGE_API_KEY }}
     steps:
+      - uses: actions/checkout@v3
       - run: |
           . scripts/sync_rumba_updates.sh https://updates.developer.allizom.org https://developer.allizom.org
+      - name: Configure AWS credentials for stage
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ secrets.STAGE_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.STAGE_AWS_ACCESS_KEY_SECRET }}
+          aws-region: us-west-2
+      - name: Invalidate Stage API Updates CDN
+        env:
+          DISTRIBUTION: E2MLRMA1VTVDHX
+          PATHS: api/v2/updates/
+        run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION" --paths "$PATHS"
