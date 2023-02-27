@@ -41,13 +41,6 @@ jobs:
     env:
       RUMBA_AUTH: ${{ secrets.RUMBA_PROD_API_KEY }}
     steps:
+      - uses: actions/checkout@v3
       - run: |
-          most_recent_update=`curl https://updates.developer.mozilla.org/rumba-bcd-updates/bcd-updates.json | jq '[.browsers[].releases[] | select(.status == "current")] | max_by(.release_date) | .release_date'`
-          most_recent_api_release=`curl https://developer.mozilla.org/api/v2/updates/ | jq '.data[0].release_date'`
-          if [ $(date -d $most_recent_update +%s) -gt $(date -d $most_recent_api_release +%s) ]; 
-          then 
-            echo "$most_recent_update is more recent than $most_recent_api_release";
-            curl -X POST 'https://developer.mozilla.org/admin-api/v2/updates/' --header "Authorization: Bearer $RUMBA_AUTH"
-          else
-            echo "$most_recent_update is not more recent than $most_recent_api_release. Finished!";
-          fi
+          . scripts/sync_rumba_updates.sh https://updates.developer.mozilla.org https://developer.mozilla.org
