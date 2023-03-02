@@ -34,7 +34,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.UPDATES_PROD_AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
       - run: aws s3 sync --acl public-read rumba-updates/ s3://updates-prod-developer-mozilla-e2b95ed55d379b1a/rumba-bcd-updates/
-
   trigger-prod-rumba-update-if-new:
     name: Trigger rumba updates if new release.
     needs: deploy-prod-updates
@@ -59,5 +58,5 @@ jobs:
       - name: Invalidate Prod API Updates CDN
         env:
           DISTRIBUTION: E2ZY2DGUN70EMI
-          PATHS: /api/v2/updates/*
+          PATHS: /api/v2/updates/
         run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION" --paths "$PATHS"
