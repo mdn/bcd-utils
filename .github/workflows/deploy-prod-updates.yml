@@ -42,14 +42,19 @@ jobs:
       RUMBA_AUTH: ${{ secrets.RUMBA_PROD_API_KEY }}
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          . scripts/sync_rumba_updates.sh https://updates.developer.mozilla.org https://developer.mozilla.org
+
+      - env:
+          RUMBA_HOST: https://developer.mozilla.org
+          UPDATES_HOST: https://updates.developer.mozilla.org
+        run: . scripts/sync_rumba_updates.sh
+
       - name: Configure AWS credentials for prod
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.PROD_AWS_ACCESS_KEY_SECRET }}
           aws-region: us-west-2
+
       - name: Invalidate Prod API Updates CDN
         env:
           DISTRIBUTION: E2ZY2DGUN70EMI
