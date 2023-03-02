@@ -60,5 +60,5 @@ jobs:
       - name: Invalidate Stage API Updates CDN
         env:
           DISTRIBUTION: E2MLRMA1VTVDHX
-          PATHS: api/v2/updates/
+          PATHS: api/v2/updates/*
         run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION" --paths "$PATHS"
