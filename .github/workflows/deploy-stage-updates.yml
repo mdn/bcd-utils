@@ -55,6 +55,6 @@ jobs:
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v1
 
-      - name: Deploy website
+      - name: Sync Rumba update
         run: |-
           gsutil -m -h "Cache-Control:public, max-age=86400" rsync -d -r rumba-updates/ gs://updates-stage-mdn/rumba-bcd-updates
