@@ -57,4 +57,4 @@ jobs:
 
       - name: Deploy website
         run: |-
-          gsutil -m -h "Cache-Control:public, max-age=86400" rsync -d -r rumba_updates/ gs://updates-stage-mdn/rumba-bcd-updates
+          gsutil -m -h "Cache-Control:public, max-age=86400" rsync -d -r rumba-updates/ gs://updates-stage-mdn/rumba-bcd-updates
