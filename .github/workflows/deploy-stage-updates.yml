@@ -57,4 +57,4 @@ jobs:
 
       - name: Sync Rumba update
         run: |-
-          gsutil -m -h "Cache-Control:public, max-age=86400" rsync -r rumba-updates/ gs://updates-stage-mdn/rumba-bcd-updates
+          gsutil -m -h "Cache-Control:public, max-age=86400" rsync -d -r rumba-updates/ gs://updates-stage-mdn/rumba-bcd-updates
