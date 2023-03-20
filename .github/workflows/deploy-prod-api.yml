@@ -9,11 +9,21 @@ on:
         default: ""
   schedule:
     - cron: "0 0 * * *"
+  workflow_call:
+    secrets:
+      GCP_PROJECT_NAME:
+        required: true
+      WIP_PROJECT_ID:
+        required: true
 
 jobs:
   deploy-prod-api:
     name: Deploy to prod
     runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      contents: read
+      id-token: write
     defaults:
       run:
         working-directory: api
@@ -41,3 +51,18 @@ jobs:
           DISTRIBUTION: E2ZY2DGUN70EMI
           PATHS: /bcd/api/*
         run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION" --paths "$PATHS"
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v0
+        with:
+          token_format: access_token
+          service_account: deploy-prod-bcd@${{ secrets.GCP_PROJECT_NAME }}.iam.gserviceaccount.com
+          workload_identity_provider: projects/${{ secrets.WIP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-actions/providers/github-actions
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Sync Rumba API
+        run: |-
+          gsutil -m -h "Cache-Control:public, max-age=86400" rsync -r out/ gs://bcd-prod-mdn/bcd/api/
+          gsutil -m -h "Cache-Control:public, max-age=86400" rsync -d -r out/v0/current gs://bcd-prod-mdn/bcd/api/v0/current
