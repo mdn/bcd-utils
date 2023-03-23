@@ -57,7 +57,7 @@ export function getBCDDataForPath(path: string): Data | void {
   if (subtree) {
     return {
       data: walk(subtree, path),
-      query: path.slice(1),
+      query: path,
       browsers: filteredBrowsers,
     };
   }
