@@ -35,15 +35,10 @@ jobs:
           node-version: 19
           registry-url: "https://registry.npmjs.org/"
           cache: npm
+
       - run: npm ci
+
       - run: npm run updates rumba
-      - name: Configure AWS credentials for prod
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-access-key-id: ${{ secrets.UPDATES_PROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.UPDATES_PROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
-      - run: aws s3 sync --acl public-read rumba-updates/ s3://updates-prod-developer-mozilla-e2b95ed55d379b1a/rumba-bcd-updates/
 
       - name: Authenticate with GCP
         uses: google-github-actions/auth@v0
@@ -63,25 +58,12 @@ jobs:
     name: Trigger rumba updates if new release.
     needs: deploy-prod-updates
     runs-on: ubuntu-latest
-    env:
-      RUMBA_AUTH: ${{ secrets.RUMBA_PROD_API_KEY }}
+
     steps:
       - uses: actions/checkout@v3
 
       - env:
+          RUMBA_AUTH: ${{ secrets.RUMBA_PROD_API_KEY }}
           RUMBA_HOST: https://developer.mozilla.org
           UPDATES_HOST: https://updates.developer.mozilla.org
         run: . scripts/sync_rumba_updates.sh
-
-      - name: Configure AWS credentials for prod
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_AWS_ACCESS_KEY_SECRET }}
-          aws-region: us-west-2
-
-      - name: Invalidate Prod API Updates CDN
-        env:
-          DISTRIBUTION: E2ZY2DGUN70EMI
-          PATHS: /api/v2/updates/
-        run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION" --paths "$PATHS"
