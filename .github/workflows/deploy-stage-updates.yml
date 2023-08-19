@@ -7,14 +7,14 @@ on:
         description: "Notes"
         required: false
         default: ""
-  schedule:
-    - cron: "0 0 * * *"
   workflow_call:
     secrets:
       GCP_PROJECT_NAME:
         required: true
       WIP_PROJECT_ID:
         required: true
+  repository_dispatch:
+    types: [bcd_release]
 
 jobs:
   deploy-stage-updates:

@@ -7,8 +7,6 @@ on:
         description: "Notes"
         required: false
         default: ""
-  schedule:
-    - cron: "0 0 * * *"
   workflow_call:
     secrets:
       GCP_PROJECT_NAME:
