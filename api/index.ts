@@ -140,11 +140,7 @@ function getPathFromAbsoluteURL(absoluteUrl?: string) {
     return absoluteUrl;
   }
 
-  const slug = url.pathname;
-  if (slug.startsWith("/docs/")) {
-    return `/en-US${slug}`;
-  }
-  return slug;
+  return url.pathname;
 }
 
 function normalizeVersion(version?: VersionValue): string | undefined {
