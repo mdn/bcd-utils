@@ -9,22 +9,22 @@ import bcd, {
   VersionValue,
 } from "@mdn/browser-compat-data";
 
-interface Data {
+export interface Data {
   data: IdentifierExtended;
   query: string;
   browsers: Browsers;
 }
 
-interface SimpleSupportStatementExtended extends SimpleSupportStatement {
+export interface SimpleSupportStatementExtended extends SimpleSupportStatement {
   release_date?: string;
   version_last?: VersionValue;
 }
 
-interface CompatStatementExtended extends CompatStatement {
+export interface CompatStatementExtended extends CompatStatement {
   support: Partial<Record<BrowserName, SimpleSupportStatementExtended[]>>;
 }
 
-interface IdentifierExtended {
+export interface IdentifierExtended {
   [key: string]: IdentifierExtended | CompatStatementExtended;
 }
 
