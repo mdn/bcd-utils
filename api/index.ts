@@ -100,9 +100,6 @@ function extendCompatStatement(
       )
         .map((simpleSupportStatement) =>
           extendSimpleSupportStatement(simpleSupportStatement, browserName)
-        )
-        .sort((a, b) =>
-          _compareVersions(_getFirstVersion(b), _getFirstVersion(a))
         ),
     ])
   );
