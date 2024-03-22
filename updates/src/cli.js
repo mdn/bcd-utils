@@ -20,7 +20,7 @@ const { versions: versionsData = {} } = await packageJson(
   "@mdn/browser-compat-data",
   {
     allVersions: true,
-  }
+  },
 );
 const versions = [...Object.keys(versionsData)];
 versions.sort(semver.compare);
@@ -31,7 +31,7 @@ const currentVersion = versions.includes(options.current)
 
 const data = await (
   await fetch(
-    `https://github.com/mdn/browser-compat-data/releases/download/v${currentVersion}/data.json`
+    `https://github.com/mdn/browser-compat-data/releases/download/v${currentVersion}/data.json`,
   )
 ).json();
 
@@ -50,7 +50,7 @@ program
         JSON.stringify({
           data: standaloneData.slice(i * 10, (i + 1) * 10, null, 2),
           last,
-        })
+        }),
       );
     }
   });
@@ -67,7 +67,7 @@ program
     console.log("writing file...");
     fs.writeFileSync(
       path.join(options.outPath, `bcd-updates.json`),
-      JSON.stringify(updates)
+      JSON.stringify(updates),
     );
   });
 

@@ -2,10 +2,10 @@
   "name": "bcd-updates",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
-  "author": "Florian Dieminger <me@fiji-flo.de>",
   "license": "MPL-2.0",
+  "author": "Florian Dieminger <me@fiji-flo.de>",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
     "updates": "node src/cli.js"
   },
