@@ -41,7 +41,7 @@ jobs:
       - run: npm run updates rumba
 
       - name: Authenticate with GCP
-        uses: google-github-actions/auth@v0
+        uses: google-github-actions/auth@v2
         with:
           token_format: access_token
           service_account: deploy-prod-updates@${{ secrets.GCP_PROJECT_NAME }}.iam.gserviceaccount.com
