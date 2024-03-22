@@ -29,8 +29,8 @@ jobs:
         working-directory: updates
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 19
           registry-url: "https://registry.npmjs.org/"
@@ -41,7 +41,7 @@ jobs:
       - run: npm run updates rumba
 
       - name: Authenticate with GCP
-        uses: google-github-actions/auth@v0
+        uses: google-github-actions/auth@v2
         with:
           token_format: access_token
           service_account: deploy-prod-updates@${{ secrets.GCP_PROJECT_NAME }}.iam.gserviceaccount.com
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - env:
           RUMBA_AUTH: ${{ secrets.RUMBA_PROD_API_KEY }}
