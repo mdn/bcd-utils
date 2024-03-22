@@ -43,11 +43,11 @@ const filteredBrowsers = Object.fromEntries(
       ...statement,
       releases: Object.fromEntries(
         Object.entries(statement.releases).filter(
-          ([_, statement]) => statement.status !== "retired"
-        )
+          ([_, statement]) => statement.status !== "retired",
+        ),
       ),
     },
-  ])
+  ]),
 ) as Browsers;
 
 export function getBCDDataForPath(path: string): Data | void {
@@ -66,7 +66,7 @@ export function getBCDDataForPath(path: string): Data | void {
 export function walk(
   tree: Identifier,
   path: string,
-  callback?: (data: Data) => void
+  callback?: (data: Data) => void,
 ): IdentifierExtended {
   const extendedTree: IdentifierExtended = Object.fromEntries(
     Object.entries(tree).map(([key, subtree]) => [
@@ -74,7 +74,7 @@ export function walk(
       key === "__compat"
         ? extendCompatStatement(subtree as CompatStatement)
         : walk(subtree as Identifier, `${path}.${key}`, callback),
-    ])
+    ]),
   );
 
   const data: Data = {
@@ -87,7 +87,7 @@ export function walk(
 }
 
 function extendCompatStatement(
-  statement: CompatStatement
+  statement: CompatStatement,
 ): CompatStatementExtended {
   const support = Object.fromEntries(
     (
@@ -97,11 +97,10 @@ function extendCompatStatement(
       (supportStatement instanceof Array
         ? supportStatement
         : [supportStatement]
-      )
-        .map((simpleSupportStatement) =>
-          extendSimpleSupportStatement(simpleSupportStatement, browserName)
-        ),
-    ])
+      ).map((simpleSupportStatement) =>
+        extendSimpleSupportStatement(simpleSupportStatement, browserName),
+      ),
+    ]),
   );
   return {
     ...statement,
@@ -112,7 +111,7 @@ function extendCompatStatement(
 
 function extendSimpleSupportStatement(
   statement: SimpleSupportStatement,
-  browserName: BrowserName
+  browserName: BrowserName,
 ): SimpleSupportStatementExtended {
   const added = normalizeVersion(statement.version_added);
   const removed = normalizeVersion(statement.version_removed);
@@ -156,11 +155,11 @@ function normalizeVersion(version?: VersionValue): string | undefined {
 
 function _getPreviousVersion(
   version: VersionValue,
-  browser: BrowserStatement
+  browser: BrowserStatement,
 ): VersionValue {
   if (browser && typeof version === "string") {
     const browserVersions = Object.keys(browser["releases"]).sort(
-      _compareVersions
+      _compareVersions,
     );
     const currentVersionIndex = browserVersions.indexOf(version);
     if (currentVersionIndex > 0) {

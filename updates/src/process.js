@@ -26,7 +26,7 @@ function mapStandaloneCompat(engines, { support, ...compat }) {
           .map(([browser, s]) => {
             const { version, engine } = engines[browser] || {};
             const removed = s.find(({ version_removed }) =>
-              Boolean(version_removed)
+              Boolean(version_removed),
             );
             const added = s.find(({ version_added }) => Boolean(version_added));
             if (
@@ -38,7 +38,7 @@ function mapStandaloneCompat(engines, { support, ...compat }) {
             }
             return null;
           })
-          .filter(Boolean)
+          .filter(Boolean),
       ),
     ],
   };
@@ -53,7 +53,7 @@ export function addedByReleaseStandalone({
   const engines = currentBrowsersAndEngine(data);
   const history = filterBrowserByStatus(browserHistory(data)).filter(
     ({ release_date }) =>
-      release_date > simpleSince && release_date <= simpleNow
+      release_date > simpleSince && release_date <= simpleNow,
   );
   const compat = [...walk({ data })].map(cleanCompat);
   return history.map(({ browser, version, release_date, ...rest }) => {
@@ -80,7 +80,7 @@ export function addedByReleaseStandalone({
           }
           return acc;
         },
-        { added: [], removed: [] }
+        { added: [], removed: [] },
       ),
     };
   });
@@ -91,7 +91,7 @@ export function addedByRelease(data, since = new Date(0)) {
   const simpleNow = simpleDate(new Date());
   const history = browserHistory(data).filter(
     ({ release_date }) =>
-      release_date > simpleSince && release_date <= simpleNow
+      release_date > simpleSince && release_date <= simpleNow,
   );
   const compat = [...walk({ data })].map(cleanCompat);
   return history.map(({ browser, version, release_date }) => [
@@ -106,7 +106,7 @@ export function addedByRelease(data, since = new Date(0)) {
         }
         return acc;
       },
-      { added: [], removed: [] }
+      { added: [], removed: [] },
     ),
   ]);
 }
