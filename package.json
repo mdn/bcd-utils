@@ -2,7 +2,7 @@
   "scripts": {
     "lint": "eslint . && prettier --check .",
     "lint-staged": "lint-staged",
-    "prepare": "husky install"
+    "prepare": "husky || true"
   },
   "lint-staged": {
     "*.ts": "eslint --max-warnings=0",
