@@ -1,0 +1,34 @@
+name: PR test
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+
+      - name: Install and lint root
+        run: |
+          npm ci
+          npm run lint
+
+      - name: Install, buil and test API dir
+        working-directory: api/
+        run: |
+          npm ci
+          npm run build
+          npm run test
+
+      # - name: Install updates dir
+      #   working-directory: updates/
+      #   run: |
+      #     npm ci
