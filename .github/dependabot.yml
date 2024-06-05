@@ -5,6 +5,16 @@ updates:
     schedule:
       interval: daily
 
+  - package-ecosystem: npm
+    directory: "/api"
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: "/updates"
+    schedule:
+      interval: daily
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
