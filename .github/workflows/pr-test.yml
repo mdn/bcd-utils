@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  root:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +21,19 @@ jobs:
           npm ci
           npm run lint
 
+  api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+
       - name: Install, buil and test API dir
         working-directory: api/
         run: |
@@ -28,7 +41,20 @@ jobs:
           npm run build
           npm run test
 
-      # - name: Install updates dir
-      #   working-directory: updates/
-      #   run: |
-      #     npm ci
+  updates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+          cache-dependency-path: updates/package-lock.json
+
+      - name: Install updates dir
+        working-directory: updates/
+        run: |
+          npm ci
