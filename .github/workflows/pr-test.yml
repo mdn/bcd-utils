@@ -17,10 +17,11 @@ jobs:
           node-version-file: ".nvmrc"
           cache: npm
 
-      - name: Install and lint root
-        run: |
-          npm ci
-          npm run lint
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
 
   api:
     if: github.repository == 'mdn/bcd-utils'
@@ -36,12 +37,17 @@ jobs:
           cache: npm
           cache-dependency-path: api/package-lock.json
 
-      - name: Install, buil and test API dir
+      - name: Install dependencies
         working-directory: api/
-        run: |
-          npm ci
-          npm run build
-          npm run test
+        run: npm ci
+
+      - name: Build
+        working-directory: api/
+        run: npm run build
+
+      - name: Test
+        working-directory: api/
+        run: npm run test
 
   updates:
     if: github.repository == 'mdn/bcd-utils'
@@ -57,7 +63,7 @@ jobs:
           cache: npm
           cache-dependency-path: updates/package-lock.json
 
-      - name: Install updates dir
+      - name: Install dependencies
         working-directory: updates/
         run: |
           npm ci
