@@ -10,7 +10,7 @@
     "updates": "node src/cli.js"
   },
   "dependencies": {
-    "commander": "^9.4.1",
+    "commander": "^12.1.0",
     "compare-versions": "^6.1.0",
     "package-json": "^8.1.0"
   },
