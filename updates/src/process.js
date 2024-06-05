@@ -94,21 +94,25 @@ export function addedByRelease(data, since = new Date(0)) {
       release_date > simpleSince && release_date <= simpleNow,
   );
   const compat = [...walk({ data })].map(cleanCompat);
-  return history.map(({ browser, version, release_date }) => [
-    { browser, version, release_date },
-    compat.reduce(
-      (acc, { path, compat }) => {
-        if ((compat?.support[browser] || []).some(addedForVersion(version))) {
-          acc.added.push(path);
-        }
-        if ((compat?.support[browser] || []).some(removedForVersion(version))) {
-          acc.removed.push(path);
-        }
-        return acc;
-      },
-      { added: [], removed: [] },
-    ),
-  ]);
+  return history
+    .filter(({ status }) => status !== "beta" && status !== "nightly")
+    .map(({ browser, version, release_date }) => [
+      { browser, version, release_date },
+      compat.reduce(
+        (acc, { path, compat }) => {
+          if ((compat?.support[browser] || []).some(addedForVersion(version))) {
+            acc.added.push(path);
+          }
+          if (
+            (compat?.support[browser] || []).some(removedForVersion(version))
+          ) {
+            acc.removed.push(path);
+          }
+          return acc;
+        },
+        { added: [], removed: [] },
+      ),
+    ]);
 }
 
 export function features({ browsers, ...data }) {
