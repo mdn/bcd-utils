@@ -5,6 +5,7 @@ on:
 
 jobs:
   root:
+    if: github.repository == 'mdn/bcd-utils'
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +23,7 @@ jobs:
           npm run lint
 
   api:
+    if: github.repository == 'mdn/bcd-utils'
     runs-on: ubuntu-latest
 
     steps:
@@ -42,6 +44,7 @@ jobs:
           npm run test
 
   updates:
+    if: github.repository == 'mdn/bcd-utils'
     runs-on: ubuntu-latest
 
     steps:
