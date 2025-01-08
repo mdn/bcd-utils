@@ -136,7 +136,7 @@ function getPathFromAbsoluteURL(absoluteUrl?: string) {
     return absoluteUrl;
   }
 
-  const slug = url.pathname;
+  const slug = url.pathname + url.hash;
   if (slug.startsWith("/docs/")) {
     return `/en-US${slug}`;
   }
