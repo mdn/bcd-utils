@@ -170,16 +170,6 @@ function _getPreviousVersion(
   return version;
 }
 
-function _getFirstVersion(support: SimpleSupportStatement): string {
-  if (typeof support.version_added === "string") {
-    return support.version_added;
-  } else if (typeof support.version_removed === "string") {
-    return support.version_removed;
-  } else {
-    return "0";
-  }
-}
-
 function _compareVersions(a: string, b: string) {
   const x = _splitVersion(a);
   const y = _splitVersion(b);
