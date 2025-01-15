@@ -39,7 +39,10 @@ jobs:
 
       - run: npm ci
 
-      - run: npm update @mdn/browser-compat-data
+      - name: Update BCD package
+        run: |-
+          npm update @mdn/browser-compat-data
+          npm list @mdn/browser-compat-data
 
       - run: npm run generate
 
