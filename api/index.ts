@@ -18,7 +18,8 @@ export interface SimpleSupportStatementExtended extends SimpleSupportStatement {
   release_date?: string;
 }
 
-export interface CompatStatementExtended extends CompatStatement {
+export interface CompatStatementExtended
+  extends Omit<CompatStatement, "support"> {
   support: Partial<Record<BrowserName, SimpleSupportStatementExtended[]>>;
 }
 
