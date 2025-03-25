@@ -8,6 +8,9 @@ on:
         required: false
         default: ""
 
+# No GITHUB_TOKEN permissions, as we don't use it.
+permissions: {}
+
 jobs:
   publish-package-api:
     name: Publish package

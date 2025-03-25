@@ -16,6 +16,9 @@ on:
   repository_dispatch:
     types: [bcd_release]
 
+# No GITHUB_TOKEN permissions, as we don't use it.
+permissions: {}
+
 jobs:
   deploy-prod-updates:
     name: Deploy to prod
