@@ -1,7 +1,6 @@
 import bcd, {
   BrowserName,
   Browsers,
-  BrowserStatement,
   CompatStatement,
   Identifier,
   SimpleSupportStatement,
@@ -17,10 +16,10 @@ export interface Data {
 
 export interface SimpleSupportStatementExtended extends SimpleSupportStatement {
   release_date?: string;
-  version_last?: VersionValue;
 }
 
-export interface CompatStatementExtended extends CompatStatement {
+export interface CompatStatementExtended
+  extends Omit<CompatStatement, "support"> {
   support: Partial<Record<BrowserName, SimpleSupportStatementExtended[]>>;
 }
 
@@ -114,14 +113,10 @@ function extendSimpleSupportStatement(
   browserName: BrowserName,
 ): SimpleSupportStatementExtended {
   const added = normalizeVersion(statement.version_added);
-  const removed = normalizeVersion(statement.version_removed);
   return {
     ...statement,
     release_date: added
       ? browsers[browserName].releases[added]?.release_date
-      : undefined,
-    version_last: removed
-      ? _getPreviousVersion(removed, browsers[browserName])
       : undefined,
   };
 }
@@ -149,50 +144,4 @@ function normalizeVersion(version?: VersionValue): string | undefined {
       ? version.slice(1)
       : version
     : undefined;
-}
-
-// the functions below are copied from yari/build/document-extractor.ts unmodified:
-
-function _getPreviousVersion(
-  version: VersionValue,
-  browser: BrowserStatement,
-): VersionValue {
-  if (browser && typeof version === "string") {
-    const browserVersions = Object.keys(browser["releases"]).sort(
-      _compareVersions,
-    );
-    const currentVersionIndex = browserVersions.indexOf(version);
-    if (currentVersionIndex > 0) {
-      return browserVersions[currentVersionIndex - 1];
-    }
-  }
-
-  return version;
-}
-
-function _compareVersions(a: string, b: string) {
-  const x = _splitVersion(a);
-  const y = _splitVersion(b);
-
-  return _compareNumberArray(x, y);
-}
-
-function _splitVersion(version: string): number[] {
-  if (version.startsWith("≤")) {
-    version = version.slice(1);
-  }
-
-  return version.split(".").map(Number);
-}
-
-function _compareNumberArray(a: number[], b: number[]): number {
-  while (a.length || b.length) {
-    const x = a.shift() || 0;
-    const y = b.shift() || 0;
-    if (x !== y) {
-      return x - y;
-    }
-  }
-
-  return 0;
 }

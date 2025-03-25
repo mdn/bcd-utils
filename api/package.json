@@ -27,6 +27,6 @@
     "typescript": "^5.4.5"
   },
   "peerDependencies": {
-    "@mdn/browser-compat-data": "^5.2.21"
+    "@mdn/browser-compat-data": "^6.0.0"
   }
 }
