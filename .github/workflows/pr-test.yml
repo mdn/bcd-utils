@@ -3,6 +3,9 @@ name: PR test
 on:
   pull_request:
 
+# No GITHUB_TOKEN permissions, as we don't use it.
+permissions: {}
+
 jobs:
   root:
     if: github.repository == 'mdn/bcd-utils'
