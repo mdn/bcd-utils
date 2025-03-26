@@ -3,7 +3,7 @@
 **Utilities for processing MDN's Browser Compatibility Data (BCD).**
 
 This monorepo includes tools to process
-[browser-compat-data](https://github.com/mdn/browser-compat-data) BCD for use in
+[browser-compat-data](https://github.com/mdn/browser-compat-data) (BCD) for use in
 MDN's frontend ([yari](https://github.com/mdn/yari)) and backend
 ([rumba](https://github.com/mdn/rumba)).
 
