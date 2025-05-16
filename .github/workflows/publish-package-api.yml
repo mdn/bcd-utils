@@ -25,7 +25,6 @@ jobs:
         with:
           node-version-file: .nvmrc
           registry-url: "https://registry.npmjs.org/"
-          cache: npm
       - run: npm ci
       - run: npm update @mdn/browser-compat-data
       - run: npm test
