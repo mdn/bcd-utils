@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------------
 # DEFAULT OWNERS
 # ----------------------------------------------------------------------------
-*    @mdn/core-dev
+*    @mdn/engineering
 
 /.github/workflows/ @mdn/engineering
 /.github/CODEOWNERS @mdn/core-dev @mdn/engineering
