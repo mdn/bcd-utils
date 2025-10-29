@@ -8,8 +8,8 @@ on:
         required: false
         default: ""
 
-# No GITHUB_TOKEN permissions, as we don't use it.
-permissions: {}
+permissions:
+  id-token: write # OIDC for npm Trusted Publishing
 
 jobs:
   publish-package-api:
@@ -32,6 +32,4 @@ jobs:
       - run: npm update @mdn/browser-compat-data
       - run: npm test
       - run: npm run build
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish --access public --provenance
