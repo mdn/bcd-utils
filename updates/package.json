@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "license": "MPL-2.0",
-  "author": "Florian Dieminger <me@fiji-flo.de>",
+  "author": "MDN Engineering Team <mdn-dev@mozilla.com>",
   "type": "module",
   "main": "index.js",
   "scripts": {
