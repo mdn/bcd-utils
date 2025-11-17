@@ -63,5 +63,4 @@ jobs:
 
       - name: Sync Rumba API
         run: |-
-          gsutil -m -h "Cache-Control:public, max-age=86400" rsync -r out/ gs://bcd-prod-mdn/bcd/api/
           gsutil -m -h "Cache-Control:public, max-age=86400" rsync -d -r out/v0/current gs://bcd-prod-mdn/bcd/api/v0/current
