@@ -27,13 +27,9 @@ export interface IdentifierExtended {
   [key: string]: IdentifierExtended | CompatStatementExtended;
 }
 
-const {
-  __meta: { version: bcdVersion },
-  browsers,
-  ...bcdAPIs
-} = bcd;
+const { __meta, browsers, ...bcdAPIs } = bcd;
 
-export { bcdVersion, bcdAPIs };
+export { __meta, bcdAPIs };
 
 const filteredBrowsers = Object.fromEntries(
   Object.entries(browsers).map(([name, statement]) => [
