@@ -9,6 +9,10 @@ import bcd, {
 } from "@mdn/browser-compat-data";
 
 export interface Data {
+  __meta: {
+    timestamp: string;
+    version: string;
+  };
   data: IdentifierExtended;
   query: string;
   browsers: Browsers;
@@ -51,6 +55,7 @@ export function getBCDDataForPath(path: string): Data | void {
     .reduce<Identifier | undefined>((prev, curr) => prev?.[curr], bcdAPIs);
   if (subtree) {
     return {
+      __meta,
       data: walk(subtree, path),
       query: path,
       browsers: filteredBrowsers,
@@ -73,6 +78,7 @@ export function walk(
   );
 
   const data: Data = {
+    __meta,
     data: extendedTree,
     query: path.slice(1),
     browsers: filteredBrowsers,
