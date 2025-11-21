@@ -58,9 +58,14 @@ jobs:
           service_account: deploy-prod-bcd@${{ secrets.GCP_PROJECT_NAME }}.iam.gserviceaccount.com
           workload_identity_provider: projects/${{ secrets.WIP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-actions/providers/github-actions
 
-      - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
-
-      - name: Sync Rumba API
-        run: |-
-          gsutil -m -h "Cache-Control:public, max-age=86400" rsync -d -r out/v0/current gs://bcd-prod-mdn/bcd/api/v0/current
+      - name: Upload to GCS
+        uses: google-github-actions/upload-cloud-storage@6397bd7208e18d13ba2619ee21b9873edc94427a # v3.0.0
+        with:
+          path: api/out/v0/current
+          destination: bcd-prod-mdn/bcd/api/v0/current
+          resumable: false
+          headers: |-
+            cache-control: public, max-age=86400
+          parent: false
+          concurrency: 500
+          process_gcloudignore: false
