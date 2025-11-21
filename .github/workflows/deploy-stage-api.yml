@@ -1,6 +1,9 @@
 name: Stage Build - API
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       notes:
