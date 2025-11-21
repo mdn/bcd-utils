@@ -22,6 +22,9 @@ on:
 # No GITHUB_TOKEN permissions, as we don't use it.
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}
+
 jobs:
   deploy-stage-api:
     name: Deploy to stage
