@@ -10,6 +10,11 @@ pre-commit:
       glob: "*.ts"
       stage_fixed: true
 
+post-merge:
+  commands:
+    install:
+      run: npm install
+
 output:
   - summary
   - failure
