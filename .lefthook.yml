@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    prettier:
+      run: npx prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+
+    eslint:
+      run: npx eslint --fix --max-warnings=0 {staged_files}
+      glob: "*.ts"
+      stage_fixed: true
+
+output:
+  - summary
+  - failure
