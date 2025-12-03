@@ -1,12 +1,6 @@
 {
   "scripts": {
-    "lint": "eslint . && prettier --check .",
-    "lint-staged": "lint-staged",
-    "prepare": "husky || true"
-  },
-  "lint-staged": {
-    "*.ts": "eslint --max-warnings=0",
-    "*": "prettier --write --ignore-unknown"
+    "lint": "eslint . && prettier --check ."
   },
   "prettier": {
     "overrides": [
@@ -58,8 +52,7 @@
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
+    "lefthook": "^1.10.3",
     "prettier": "^3.7.3",
     "prettier-plugin-packagejson": "^2.5.20"
   },
