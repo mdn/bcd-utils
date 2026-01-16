@@ -68,7 +68,7 @@ jobs:
           destination: bcd-prod-mdn/bcd/api/v0/current
           resumable: false
           headers: |-
-            cache-control: public, max-age=86400
+            cache-control: public, max-age=3600
           parent: false
           concurrency: 500
           process_gcloudignore: false
