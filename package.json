@@ -52,7 +52,7 @@
     "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
-    "lefthook": "^2.0.13",
+    "lefthook": "^2.0.15",
     "prettier": "^3.7.4",
     "prettier-plugin-packagejson": "^2.5.20"
   },
