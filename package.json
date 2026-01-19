@@ -54,7 +54,7 @@
     "eslint-config-prettier": "^10.1.8",
     "lefthook": "^2.0.13",
     "prettier": "^3.7.4",
-    "prettier-plugin-packagejson": "^2.5.20"
+    "prettier-plugin-packagejson": "^2.5.22"
   },
   "packageManager": "npm@11.6.2",
   "engines": {
