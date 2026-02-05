@@ -1,6 +1,9 @@
-name: PR test
+name: Test
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
 
 # No GITHUB_TOKEN permissions, as we don't use it.
@@ -12,17 +15,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
-      - name: Setup Node.js environment
+      - name: Setup Node
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
-          node-version-file: ".nvmrc"
+          node-version-file: .nvmrc
           cache: npm
 
-      - name: Install dependencies
+      - name: Install
         run: npm ci
 
       - name: Lint
@@ -33,18 +37,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
-      - name: Setup Node.js environment
+      - name: Setup Node
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
-          node-version-file: ".nvmrc"
+          node-version-file: .nvmrc
           cache: npm
           cache-dependency-path: api/package-lock.json
 
-      - name: Install dependencies
+      - name: Install
         working-directory: api/
         run: npm ci
 
@@ -61,18 +66,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
-      - name: Setup Node.js environment
+      - name: Setup Node
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
-          node-version-file: ".nvmrc"
+          node-version-file: .nvmrc
           cache: npm
           cache-dependency-path: updates/package-lock.json
 
-      - name: Install dependencies
+      - name: Install
         working-directory: updates/
-        run: |
-          npm ci
+        run: npm ci
