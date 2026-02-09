@@ -48,13 +48,12 @@
     "root": true
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
     "lefthook": "^2.1.0",
     "prettier": "^3.8.1",
-    "prettier-plugin-packagejson": "^3.0.0"
+    "prettier-plugin-packagejson": "^3.0.0",
+    "typescript-eslint": "^7.18.0"
   },
   "packageManager": "npm@11.6.2",
   "engines": {
