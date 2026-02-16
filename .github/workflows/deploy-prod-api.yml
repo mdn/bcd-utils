@@ -44,6 +44,7 @@ jobs:
           node-version-file: .nvmrc
           package-manager-cache: false
           registry-url: "https://registry.npmjs.org/"
+          check-latest: true
 
       - run: npm ci
 
