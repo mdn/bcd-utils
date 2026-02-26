@@ -6,8 +6,7 @@ on:
       - main
   pull_request:
 
-# No GITHUB_TOKEN permissions, as we don't use it.
-permissions: {}
+permissions: {} # No GITHUB_TOKEN permissions, as we don't use it.
 
 jobs:
   root:
@@ -24,6 +23,7 @@ jobs:
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version-file: .nvmrc
+          check-latest: true
           cache: npm
 
       - name: Install
@@ -46,6 +46,7 @@ jobs:
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version-file: .nvmrc
+          check-latest: true
           cache: npm
           cache-dependency-path: api/package-lock.json
 
@@ -75,6 +76,7 @@ jobs:
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version-file: .nvmrc
+          check-latest: true
           cache: npm
           cache-dependency-path: updates/package-lock.json
 
