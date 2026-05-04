@@ -1,0 +1,148 @@
+name: Nightly Build - API
+
+on:
+  schedule:
+    # Aligned with mdn/dex builds.
+    - cron: "40 0 * * *"
+  push:
+    branches:
+      - nightly-api
+  workflow_dispatch:
+    inputs:
+      notes:
+        description: "Notes"
+        required: false
+        default: ""
+
+# No GITHUB_TOKEN permissions, as we don't use it.
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  build:
+    name: Build with BCD nightly
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      bcd-sha: ${{ steps.bcd-sha.outputs.sha }}
+    steps:
+      - name: Checkout bcd-utils
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Checkout BCD source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: mdn/browser-compat-data
+          path: browser-compat-data
+          persist-credentials: false
+
+      - id: bcd-sha
+        name: Record BCD SHA
+        working-directory: browser-compat-data
+        run: |
+          SHA=$(git rev-parse HEAD)
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "BCD nightly SHA: [\`$SHA\`](https://github.com/mdn/browser-compat-data/commit/$SHA)" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Build BCD
+        working-directory: browser-compat-data
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install API deps
+        working-directory: api
+        run: npm ci
+
+      - name: Override BCD with nightly build
+        working-directory: api
+        run: |
+          npm install --no-save file:../browser-compat-data/build
+          npm list @mdn/browser-compat-data
+
+      - name: Generate API output
+        working-directory: api
+        run: npm run generate
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: api-out
+          path: api/out/v0/current
+          retention-days: 7
+          if-no-files-found: error
+
+  deploy-stage:
+    name: Deploy nightly to stage
+    needs: build
+    runs-on: ubuntu-latest
+    environment: stage
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: api-out
+          path: out
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          token_format: access_token
+          service_account: deploy-stage-bcd@${{ secrets.GCP_PROJECT_NAME }}.iam.gserviceaccount.com
+          workload_identity_provider: projects/${{ secrets.WIP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-actions/providers/github-actions
+
+      - name: Upload to GCS
+        uses: google-github-actions/upload-cloud-storage@6397bd7208e18d13ba2619ee21b9873edc94427a # v3.0.0
+        with:
+          path: out
+          destination: bcd-stage-mdn/bcd/api/v0/current
+          resumable: false
+          headers: |-
+            cache-control: public, max-age=3600
+          parent: false
+          concurrency: 500
+          process_gcloudignore: false
+
+#  deploy-prod:
+#    name: Deploy nightly to prod
+#    needs: [build, deploy-stage]
+#    runs-on: ubuntu-latest
+#    environment: prod
+#    permissions:
+#      contents: read
+#      id-token: write
+#    steps:
+#      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+#        with:
+#          name: api-out
+#          path: out
+#
+#      - name: Authenticate with GCP
+#        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+#        with:
+#          token_format: access_token
+#          service_account: deploy-prod-bcd@${{ secrets.GCP_PROJECT_NAME }}.iam.gserviceaccount.com
+#          workload_identity_provider: projects/${{ secrets.WIP_PROJECT_ID }}/locations/global/workloadIdentityPools/github-actions/providers/github-actions
+#
+#      - name: Upload to GCS
+#        uses: google-github-actions/upload-cloud-storage@6397bd7208e18d13ba2619ee21b9873edc94427a # v3.0.0
+#        with:
+#          path: out
+#          destination: bcd-prod-mdn/bcd/api/v0/current
+#          resumable: false
+#          headers: |-
+#            cache-control: public, max-age=3600
+#          parent: false
+#          concurrency: 500
+#          process_gcloudignore: false
