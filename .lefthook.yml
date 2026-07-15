@@ -7,7 +7,7 @@ pre-commit:
 
     eslint:
       run: npx eslint --fix --cache --max-warnings=0 {staged_files}
-      glob: "*.ts"
+      glob: "*.js"
       stage_fixed: true
 
 post-merge:

@@ -5,10 +5,13 @@
     "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": true,
     "strict": true,
     "outDir": "dist",
     "declaration": true,
+    "emitDeclarationOnly": true,
     "types": ["node"]
   },
-  "files": ["index.ts"]
+  "include": ["index.js", "cli.js"]
 }
