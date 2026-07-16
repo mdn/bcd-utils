@@ -16,14 +16,14 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "generate": "ts-node cli.ts",
+    "generate": "tsx cli.ts",
     "test": "npm run generate && rm -r out"
   },
   "devDependencies": {
     "@types/node": "^24.10.3",
     "@types/semver": "^7.3.13",
     "semver": "^7.3.8",
-    "ts-node": "^10.9.1",
+    "tsx": "^4.23.1",
     "typescript": "^6.0.2"
   },
   "peerDependencies": {
