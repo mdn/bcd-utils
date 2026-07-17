@@ -24,39 +24,15 @@
       }
     ]
   },
-  "eslintConfig": {
-    "env": {
-      "node": true
-    },
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier"
-    ],
-    "rules": {
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        {
-          "argsIgnorePattern": "^_+$"
-        }
-      ]
-    },
-    "ignorePatterns": [
-      "node_modules"
-    ],
-    "root": true
-  },
   "devDependencies": {
-    "eslint": "^8.57.1",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.7.0",
     "lefthook": "^2.1.10",
     "prettier": "^3.9.5",
     "prettier-plugin-packagejson": "^3.0.2",
-    "typescript-eslint": "^8.63.0"
+    "typescript-eslint": "^8.64.0"
   },
   "packageManager": "npm@11.12.1",
   "engines": {
