@@ -56,7 +56,7 @@ const filteredBrowsers = /** @type {Browsers} */ (
 
 /**
  * @param {string} path
- * @returns {Data | void}
+ * @returns {Data | undefined}
  */
 export function getBCDDataForPath(path) {
   const subtree = path
