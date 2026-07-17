@@ -12,18 +12,23 @@
   },
   "license": "MPL-2.0",
   "author": "MDN Web Docs",
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "index.js",
+    "dist/index.d.ts"
+  ],
   "scripts": {
     "build": "tsc",
-    "generate": "tsx cli.ts",
+    "generate": "node cli.js",
+    "prepack": "tsc",
     "test": "npm run generate && rm -r out"
   },
   "devDependencies": {
     "@types/node": "^24.10.3",
     "@types/semver": "^7.3.13",
     "semver": "^7.3.8",
-    "tsx": "^4.23.1",
     "typescript": "^6.0.2"
   },
   "peerDependencies": {
