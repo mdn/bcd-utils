@@ -23,6 +23,7 @@
   "scripts": {
     "build": "tsc",
     "generate": "node cli.js",
+    "prepack": "tsc",
     "test": "npm run generate && rm -r out"
   },
   "devDependencies": {
