@@ -1,4 +1,5 @@
 {
+  "name": "@mdn/bcd-utils",
   "scripts": {
     "lint": "eslint . && prettier --check ."
   },
