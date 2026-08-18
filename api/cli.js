@@ -1,9 +1,9 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import { major } from "semver";
-import { bcdAPIs, walk } from "./index";
-import { version } from "./package.json";
+import semver from "semver";
+import { bcdAPIs, walk } from "./index.js";
+import pkg from "./package.json" with { type: "json" };
 
-const BUILD_PATH = `out/v${major(version)}`;
+const BUILD_PATH = `out/v${semver.major(pkg.version)}`;
 
 main();
 
