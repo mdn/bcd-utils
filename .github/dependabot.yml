@@ -4,16 +4,25 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
+    cooldown:
+      exclude:
+        - "@mdn/*"
 
   - package-ecosystem: npm
     directory: "/api"
     schedule:
       interval: weekly
+    cooldown:
+      exclude:
+        - "@mdn/*"
 
   - package-ecosystem: npm
     directory: "/updates"
     schedule:
       interval: weekly
+    cooldown:
+      exclude:
+        - "@mdn/*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
