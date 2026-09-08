@@ -44,5 +44,8 @@
       "name": "npm",
       "version": ">=11.8.0"
     }
+  },
+  "allowScripts": {
+    "lefthook": true
   }
 }
