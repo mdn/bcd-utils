@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "download-bcd": "curl -fsSL -o node_modules/@mdn/browser-compat-data/data.json https://github.com/mdn/browser-compat-data/releases/download/next/data.json",
     "generate": "node cli.js",
     "prepack": "tsc",
     "test": "npm run generate && rm -r out"

@@ -15,6 +15,9 @@ on:
         required: true
   repository_dispatch:
     types: [bcd_release]
+  schedule:
+    # 40 minutes after BCD's `next` prerelease is rebuilt (00:00 UTC).
+    - cron: "40 0 * * *"
 
 # No GITHUB_TOKEN permissions, as we don't use it.
 permissions: {}
@@ -47,10 +50,10 @@ jobs:
 
       - run: npm ci
 
-      - name: Update BCD package
-        run: |-
-          npm update @mdn/browser-compat-data
-          npm list @mdn/browser-compat-data
+      # The `next` prerelease has no npm dist-tag, so we overwrite the data of
+      # the installed package with the release asset.
+      - name: Download BCD `next` data
+        run: npm run download-bcd
 
       - run: npm run generate
 

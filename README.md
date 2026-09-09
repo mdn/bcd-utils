@@ -14,14 +14,17 @@ This repository consists of two packages:
 ### `/api`
 
 Generates JSON files from BCD to be consumed by MDN's
-[yari](https://github.com/mdn/yari) frontend, powering the BCD tables.
+[yari](https://github.com/mdn/yari) frontend, powering the BCD tables. Data
+comes from BCD's
+[`next`](https://github.com/mdn/browser-compat-data/releases/tag/next)
+prerelease rather than the latest stable release, so it updates daily.
 
 - **Usage**:
 
   ```sh
   cd api
   npm ci
-  npm update @mdn/browser-compat-data
+  npm run download-bcd
   npm run generate
   ```
 
