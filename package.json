@@ -33,7 +33,7 @@
     "lefthook": "^2.1.12",
     "prettier": "^3.9.6",
     "prettier-plugin-packagejson": "^3.0.2",
-    "typescript-eslint": "^8.69.0"
+    "typescript-eslint": "^8.70.0"
   },
   "packageManager": "npm@11.19.0",
   "engines": {
