@@ -1,32 +1,84 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: "/"
+    directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 10
     cooldown:
+      default-days: 3
       exclude:
         - "@mdn/*"
-
-  - package-ecosystem: npm
-    directory: "/api"
-    schedule:
-      interval: weekly
-    cooldown:
-      exclude:
-        - "@mdn/*"
-
-  - package-ecosystem: npm
-    directory: "/updates"
-    schedule:
-      interval: weekly
-    cooldown:
-      exclude:
-        - "@mdn/*"
-
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: weekly
+    groups:
+      npm-prod:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      npm-dev:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
     commit-message:
-      prefix: "ci(deps): "
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: npm
+    directory: /api
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 3
+      exclude:
+        - "@mdn/*"
+    groups:
+      npm-prod:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      npm-dev:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: npm
+    directory: /updates
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 3
+      exclude:
+        - "@mdn/*"
+    groups:
+      npm-prod:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      npm-dev:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 3
+    commit-message:
+      prefix: ci
+      include: scope
