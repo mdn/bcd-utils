@@ -29,11 +29,11 @@
     "@eslint/js": "^10.0.1",
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.12.0",
-    "lefthook": "^2.1.14",
+    "globals": "^17.13.0",
+    "lefthook": "^2.1.17",
     "prettier": "^3.9.9",
     "prettier-plugin-packagejson": "^3.0.2",
-    "typescript-eslint": "^8.71.0"
+    "typescript-eslint": "^8.71.1"
   },
   "packageManager": "npm@11.19.0",
   "engines": {
