@@ -3,6 +3,9 @@
   "scripts": {
     "lint": "eslint . && prettier --check ."
   },
+  "allowScripts": {
+    "lefthook": true
+  },
   "prettier": {
     "overrides": [
       {
@@ -32,8 +35,8 @@
     "globals": "^17.13.0",
     "lefthook": "^2.2.2",
     "prettier": "^3.9.10",
-    "prettier-plugin-packagejson": "^3.0.2",
-    "typescript-eslint": "^8.72.0"
+    "prettier-plugin-packagejson": "^3.0.3",
+    "typescript-eslint": "^8.72.1"
   },
   "packageManager": "npm@11.19.0",
   "engines": {
@@ -44,8 +47,5 @@
       "name": "npm",
       "version": ">=11.8.0"
     }
-  },
-  "allowScripts": {
-    "lefthook": true
   }
 }
