@@ -3,6 +3,9 @@
   "scripts": {
     "lint": "eslint . && prettier --check ."
   },
+  "allowScripts": {
+    "lefthook": true
+  },
   "prettier": {
     "overrides": [
       {
@@ -44,8 +47,5 @@
       "name": "npm",
       "version": ">=11.8.0"
     }
-  },
-  "allowScripts": {
-    "lefthook": true
   }
 }
