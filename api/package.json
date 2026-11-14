@@ -27,7 +27,7 @@
     "test": "npm run generate && rm -r out"
   },
   "devDependencies": {
-    "@types/node": "^24.19.2",
+    "@types/node": "^26.6.6",
     "@types/semver": "^7.3.13",
     "semver": "^7.3.8",
     "typescript": "^6.0.2"
